@@ -1,0 +1,24 @@
+module top_module (
+    input [3:0] SW,
+    input [3:0] KEY,
+    output [3:0] LEDR
+); //
+    MUXDFF u0(KEY[0],LEDR[1],SW[0],KEY[1],KEY[2],LEDR[0]);
+    MUXDFF u1(KEY[0],LEDR[2],SW[1],KEY[1],KEY[2],LEDR[1]);
+    MUXDFF u2(KEY[0],LEDR[3],SW[2],KEY[1],KEY[2],LEDR[2]);
+    MUXDFF u3(KEY[0],KEY[3],SW[3],KEY[1],KEY[2],LEDR[3]);
+
+endmodule
+
+module MUXDFF (
+    input clk,
+    input w, R, E, L,
+    output Q
+);
+ reg mux1_out, mux2_outD;
+    assign mux1_out = E ? w :Q;
+    assign mux2_outD = L ? R: mux1_out;
+    always @(posedge clk) begin
+        Q<=mux2_outD;
+    end
+endmodule
